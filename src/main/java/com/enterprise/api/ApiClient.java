@@ -50,10 +50,8 @@ public class ApiClient {
             spec.queryParams(queryParams);
         }
 
-        // Add Request/Response Logging to logs file for transparency
-        if (log.isDebugEnabled()) {
-            spec.log().all();
-        }
+        // Always log request details for troubleshooting
+        spec.log().all();
 
         return spec;
     }
@@ -65,6 +63,7 @@ public class ApiClient {
         log.info("Sending GET request to: {}", endpoint);
         Response response = getRequestSpec(headers, queryParams).get(endpoint);
         log.info("GET Response Status Code: {}", response.getStatusCode());
+        response.then().log().all(); // log response
         return response;
     }
 
@@ -83,6 +82,7 @@ public class ApiClient {
         }
         Response response = spec.post(endpoint);
         log.info("POST Response Status Code: {}", response.getStatusCode());
+        response.then().log().all(); // log response
         return response;
     }
 
@@ -101,6 +101,7 @@ public class ApiClient {
         }
         Response response = spec.put(endpoint);
         log.info("PUT Response Status Code: {}", response.getStatusCode());
+        response.then().log().all(); // log response
         return response;
     }
 
@@ -111,6 +112,7 @@ public class ApiClient {
         log.info("Sending DELETE request to: {}", endpoint);
         Response response = getRequestSpec(headers, Collections.emptyMap()).delete(endpoint);
         log.info("DELETE Response Status Code: {}", response.getStatusCode());
+        response.then().log().all(); // log response
         return response;
     }
 
@@ -125,6 +127,7 @@ public class ApiClient {
         }
         Response response = spec.patch(endpoint);
         log.info("PATCH Response Status Code: {}", response.getStatusCode());
+        response.then().log().all(); // log response
         return response;
     }
 }

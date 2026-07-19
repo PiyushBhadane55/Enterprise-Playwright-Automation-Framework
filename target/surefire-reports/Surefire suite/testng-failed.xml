@@ -3,12 +3,14 @@
 <suite name="Failed suite [Surefire suite]" verbose="0">
   <test thread-count="5" name="Surefire test(failed)" verbose="0">
     <classes>
-      <class name="com.enterprise.tests.db.CustomerDatabaseTest">
+      <class name="com.enterprise.tests.ui.SauceDemoTest">
         <methods>
-          <include name="testDatabaseSeedData"/>
-          <include name="testDatabaseCrudOperations"/>
+          <include name="testSauceDemoLoginLogout"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="tearDownSuite"/>
         </methods>
-      </class> <!-- com.enterprise.tests.db.CustomerDatabaseTest -->
+      </class> <!-- com.enterprise.tests.ui.SauceDemoTest -->
     </classes>
   </test> <!-- Surefire test(failed) -->
 </suite> <!-- Failed suite [Surefire suite] -->

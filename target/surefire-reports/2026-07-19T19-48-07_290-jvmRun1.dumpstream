@@ -1,0 +1,39 @@
+# Created at 2026-07-19T19:48:25.766
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Downloading Chromium 127.0.6533.17 (playwright build v1124)[2m from https://playwright.azureedge.net/builds/chromium/1124/chromium-win64.zip[22m'.
+
+# Created at 2026-07-19T19:48:32.290
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '|                                                                                |   0% of 134.8 MiB'.
+
+# Created at 2026-07-19T19:50:02.220
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '|■■■■■■■■                                                                        |  10% of 134.8 MiB'.
+
+# Created at 2026-07-19T19:50:14.919
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '|■■■■■■■■■■■■■■■■                                                                |  20% of 134.8 MiB'.
+
+# Created at 2026-07-19T19:50:58.273
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 134.8 MiB'.
+
+# Created at 2026-07-19T19:50:58.597
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Downloading Chromium 127.0.6533.17 (playwright build v1124)[2m from https://playwright-akamai.azureedge.net/builds/chromium/1124/chromium-win64.zip[22m'.
+
+# Created at 2026-07-19T19:50:58.880
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Downloading Chromium 127.0.6533.17 (playwright build v1124)[2m from https://playwright-verizon.azureedge.net/builds/chromium/1124/chromium-win64.zip[22m'.
+
+# Created at 2026-07-19T19:50:58.883
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Failed to install browsers'.
+
+# Created at 2026-07-19T19:50:58.885
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Error: Failed to download Chromium 127.0.6533.17 (playwright build v1124), caused by'.
+
+# Created at 2026-07-19T19:50:58.887
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream 'Error: Download failure, code=1'.
+
+# Created at 2026-07-19T19:50:58.889
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '    at ChildProcess.<anonymous> (C:\Users\PIYUSH~1\AppData\Local\Temp\playwright-java-10338494753058200249\package\lib\server\registry\browserFetcher.js:91:16)'.
+
+# Created at 2026-07-19T19:50:58.890
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '    at ChildProcess.emit (node:events:519:28)'.
+
+# Created at 2026-07-19T19:50:59.171
+Corrupted channel by directly writing to native stream in forked JVM 1. Stream '    at ChildProcess._handle.onexit (node:internal/child_process:294:12)'.
+

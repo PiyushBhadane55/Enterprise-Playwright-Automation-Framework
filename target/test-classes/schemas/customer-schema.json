@@ -5,20 +5,16 @@
     "name": {
       "type": "string"
     },
-    "job": {
+    "username": {
       "type": "string"
     },
     "id": {
-      "type": "string"
-    },
-    "createdAt": {
-      "type": "string"
+      "type": "integer"
     }
   },
   "required": [
     "name",
-    "job",
-    "id",
-    "createdAt"
+    "username",
+    "id"
   ]
 }

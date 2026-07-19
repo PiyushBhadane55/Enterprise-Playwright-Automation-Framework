@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-07-19T19:30:19 IST" name="Surefire suite" finished-at="2026-07-19T19:30:23 IST" duration-ms="3740">
+  <suite started-at="2026-07-19T21:20:15 IST" name="Surefire suite" finished-at="2026-07-19T21:20:27 IST" duration-ms="12854">
     <groups>
     </groups>
-    <test started-at="2026-07-19T19:30:19 IST" name="Surefire test" finished-at="2026-07-19T19:30:23 IST" duration-ms="3740">
-      <class name="com.enterprise.tests.db.CustomerDatabaseTest">
-        <test-method signature="testDatabaseCrudOperations()[pri:0, instance:com.enterprise.tests.db.CustomerDatabaseTest@3fbe503c]" started-at="2026-07-19T19:30:20 IST" name="testDatabaseCrudOperations" description="Verify inserting and deleting customer in PostgreSQL database" finished-at="2026-07-19T19:30:23 IST" duration-ms="3453" status="PASS">
+    <test started-at="2026-07-19T21:20:15 IST" name="Surefire test" finished-at="2026-07-19T21:20:27 IST" duration-ms="12854">
+      <class name="com.enterprise.tests.ui.SauceDemoTest">
+        <test-method is-config="true" signature="setUp(java.lang.String)[pri:0, instance:com.enterprise.tests.ui.SauceDemoTest@3dc40ab9]" started-at="2026-07-19T21:20:15 IST" name="setUp" finished-at="2026-07-19T21:20:25 IST" duration-ms="10225" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[chrome]]>
+              </value>
+            </param>
+          </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testDatabaseCrudOperations -->
-        <test-method signature="testDatabaseSeedData()[pri:0, instance:com.enterprise.tests.db.CustomerDatabaseTest@3fbe503c]" started-at="2026-07-19T19:30:23 IST" name="testDatabaseSeedData" description="Verify reading seed customers from PostgreSQL database" finished-at="2026-07-19T19:30:23 IST" duration-ms="11" status="PASS">
+        </test-method> <!-- setUp -->
+        <test-method signature="testSauceDemoLoginLogout()[pri:0, instance:com.enterprise.tests.ui.SauceDemoTest@3dc40ab9]" started-at="2026-07-19T21:20:25 IST" name="testSauceDemoLoginLogout" description="Verify SauceDemo login and logout workflow" finished-at="2026-07-19T21:20:27 IST" duration-ms="1799" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testDatabaseSeedData -->
-      </class> <!-- com.enterprise.tests.db.CustomerDatabaseTest -->
+        </test-method> <!-- testSauceDemoLoginLogout -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.enterprise.tests.ui.SauceDemoTest@3dc40ab9]" started-at="2026-07-19T21:20:27 IST" name="tearDown" finished-at="2026-07-19T21:20:27 IST" duration-ms="504" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="tearDownSuite()[pri:0, instance:com.enterprise.tests.ui.SauceDemoTest@3dc40ab9]" started-at="2026-07-19T21:20:28 IST" name="tearDownSuite" finished-at="2026-07-19T21:20:30 IST" duration-ms="2017" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownSuite -->
+      </class> <!-- com.enterprise.tests.ui.SauceDemoTest -->
     </test> <!-- Surefire test -->
   </suite> <!-- Surefire suite -->
 </testng-results>

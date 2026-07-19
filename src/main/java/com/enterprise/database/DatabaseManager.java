@@ -33,6 +33,9 @@ public class DatabaseManager {
         if (dataSource == null) {
             log.info("Initializing Database Connection Pool...");
             try {
+                // Ensure the database is created if it does not exist
+                bootstrapDatabase();
+
                 HikariConfig config = new HikariConfig();
                 config.setJdbcUrl(ConfigManager.get("db.url"));
                 config.setUsername(ConfigManager.get("db.username"));
@@ -55,6 +58,50 @@ public class DatabaseManager {
                 log.error("Failed to initialize Database Connection Pool.", e);
                 throw new RuntimeException("DB Initialization failed.", e);
             }
+        }
+    }
+
+    /**
+     * Dynamically creates the target database if it does not exist on the PostgreSQL server.
+     */
+    private static void bootstrapDatabase() {
+        String dbUrl = ConfigManager.get("db.url");
+        String username = ConfigManager.get("db.username");
+        String password = ConfigManager.get("db.password");
+
+        if (dbUrl == null || !dbUrl.startsWith("jdbc:postgresql:")) {
+            return;
+        }
+
+        try {
+            int lastSlashIndex = dbUrl.lastIndexOf('/');
+            if (lastSlashIndex == -1) return;
+
+            String baseUrl = dbUrl.substring(0, lastSlashIndex + 1) + "postgres";
+            String dbName = dbUrl.substring(lastSlashIndex + 1);
+
+            if (dbName.contains("?")) {
+                dbName = dbName.substring(0, dbName.indexOf('?'));
+            }
+
+            log.info("Checking if database '{}' exists on server...", dbName);
+
+            Class.forName(ConfigManager.get("db.driver", "org.postgresql.Driver"));
+            try (java.sql.Connection conn = java.sql.DriverManager.getConnection(baseUrl, username, password);
+                 java.sql.Statement stmt = conn.createStatement()) {
+
+                try (java.sql.ResultSet rs = stmt.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'")) {
+                    if (!rs.next()) {
+                        log.info("Database '{}' does not exist. Attempting creation...", dbName);
+                        stmt.executeUpdate("CREATE DATABASE " + dbName);
+                        log.info("Database '{}' created successfully.", dbName);
+                    } else {
+                        log.info("Database '{}' already exists.", dbName);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Database bootstrapping encountered an error: {}", e.getMessage());
         }
     }
 

@@ -26,11 +26,11 @@ public class CustomerApiTest {
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getTime()).isLessThan(3000L); // Response time check
         
-        String firstName = response.jsonPath().getString("data.first_name");
-        String lastName = response.jsonPath().getString("data.last_name");
+        String name = response.jsonPath().getString("name");
+        String email = response.jsonPath().getString("email");
         
-        assertThat(firstName).isEqualTo("Janet");
-        assertThat(lastName).isEqualTo("Weaver");
+        assertThat(name).isEqualTo("Ervin Howell");
+        assertThat(email).isEqualTo("Shanna@melissa.tv");
     }
 
     @Test(description = "Verify POST Create Customer")
@@ -39,7 +39,7 @@ public class CustomerApiTest {
     public void testCreateCustomer() {
         Map<String, String> body = new HashMap<>();
         body.put("name", "Antigravity");
-        body.put("job", "AI Agent");
+        body.put("username", "AI Agent");
 
         Response response = ApiClient.post("/users", body);
 
@@ -47,9 +47,9 @@ public class CustomerApiTest {
         
         // Assert response values
         String name = response.jsonPath().getString("name");
-        String job = response.jsonPath().getString("job");
+        String username = response.jsonPath().getString("username");
         assertThat(name).isEqualTo("Antigravity");
-        assertThat(job).isEqualTo("AI Agent");
+        assertThat(username).isEqualTo("AI Agent");
 
         // Validate JSON Schema
         response.then().body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schemas/customer-schema.json"));
@@ -61,20 +61,20 @@ public class CustomerApiTest {
     public void testUpdateCustomer() {
         Map<String, String> body = new HashMap<>();
         body.put("name", "Antigravity Modified");
-        body.put("job", "Lead AI Agent");
+        body.put("username", "Lead AI Agent");
 
         Response response = ApiClient.put("/users/2", body, null);
 
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.jsonPath().getString("name")).isEqualTo("Antigravity Modified");
-        assertThat(response.jsonPath().getString("job")).isEqualTo("Lead AI Agent");
+        assertThat(response.jsonPath().getString("username")).isEqualTo("Lead AI Agent");
     }
 
     @Test(description = "Verify DELETE Customer")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Sends a DELETE request and asserts 204 No Content response status code.")
+    @Description("Sends a DELETE request and asserts 200 OK response status code.")
     public void testDeleteCustomer() {
         Response response = ApiClient.delete("/users/2", null);
-        assertThat(response.getStatusCode()).isEqualTo(204);
+        assertThat(response.getStatusCode()).isEqualTo(200);
     }
 }

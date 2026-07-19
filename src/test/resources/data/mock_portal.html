@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enterprise Automation Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .hidden {
+            display: none;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+        .download-btn {
+            background-color: #2ecc71;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 15px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .download-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="login-container">
+    <h2>Portal Login</h2>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password">
+    </div>
+    <button id="login-btn" onclick="performLogin()">Login</button>
+</div>
+
+<div class="container hidden" id="dashboard-container">
+    <h2>Customer Dashboard</h2>
+    <div id="success-alert" class="alert-success hidden">Customer successfully created!</div>
+    
+    <div class="form-group">
+        <label for="cust-firstname">First Name</label>
+        <input type="text" id="cust-firstname" placeholder="First Name">
+    </div>
+    <div class="form-group">
+        <label for="cust-lastname">Last Name</label>
+        <input type="text" id="cust-lastname" placeholder="Last Name">
+    </div>
+    <button id="create-cust-btn" onclick="createCustomer()">Create Customer</button>
+
+    <div id="download-section" class="hidden">
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <p>Customer Profile Report is ready for download:</p>
+        <a id="download-link" href="sample_report.pdf" download="sample_report.pdf" class="download-btn">Download PDF Report</a>
+    </div>
+    
+    <button id="logout-btn" onclick="performLogout()" style="background-color: #e74c3c; margin-top: 20px;">Logout</button>
+</div>
+
+<script>
+    function performLogin() {
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        
+        if (user === "admin" && pass === "password123") {
+            document.getElementById("login-container").classList.add("hidden");
+            document.getElementById("dashboard-container").classList.remove("hidden");
+        } else {
+            alert("Invalid credentials. Use admin / password123");
+        }
+    }
+
+    function createCustomer() {
+        const fn = document.getElementById("cust-firstname").value;
+        const ln = document.getElementById("cust-lastname").value;
+        
+        if (fn && ln) {
+            document.getElementById("success-alert").classList.remove("hidden");
+            document.getElementById("download-section").classList.remove("hidden");
+        } else {
+            alert("Please fill in all customer details.");
+        }
+    }
+
+    function performLogout() {
+        document.getElementById("dashboard-container").classList.add("hidden");
+        document.getElementById("login-container").classList.remove("hidden");
+        document.getElementById("success-alert").classList.add("hidden");
+        document.getElementById("download-section").classList.add("hidden");
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+        document.getElementById("cust-firstname").value = "";
+        document.getElementById("cust-lastname").value = "";
+    }
+</script>
+
+</body>
+</html>

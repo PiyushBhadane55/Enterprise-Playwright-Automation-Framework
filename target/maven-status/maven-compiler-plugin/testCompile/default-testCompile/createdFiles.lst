@@ -1,0 +1,6 @@
+com\enterprise\tests\integration\E2eCustomerWorkflowTest.class
+com\enterprise\tests\ui\OrangeHrmTest.class
+com\enterprise\tests\ui\SauceDemoTest.class
+com\enterprise\tests\api\CustomerApiTest.class
+com\enterprise\tests\BaseTest.class
+com\enterprise\tests\db\CustomerDatabaseTest.class

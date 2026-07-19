@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_DIR">logs</Property>
+        <Property name="ARCHIVE_DIR">${LOG_DIR}/archive</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender with color patterns -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n%throwable" />
+        </Console>
+
+        <!-- Rolling File Appender for log history -->
+        <RollingFile name="FileAppender" fileName="${LOG_DIR}/automation.log"
+                     filePattern="${ARCHIVE_DIR}/automation-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n%throwable" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender" />
+        </Root>
+
+        <!-- Framework custom logger (set to debug/info based on preference) -->
+        <Logger name="com.enterprise" level="INFO" additivity="false">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender" />
+        </Logger>
+
+        <!-- Mute verbose logs from dependencies like Playwright, HTTP clients, etc. -->
+        <Logger name="org.apache.http" level="WARN" />
+        <Logger name="io.netty" level="WARN" />
+        <Logger name="com.microsoft.playwright" level="INFO" />
+    </Loggers>
+</Configuration>

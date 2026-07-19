@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Enterprise Automation Suite" parallel="tests" thread-count="2" verbose="1">
+
+    <listeners>
+        <!-- Custom listener for logging, retry analyzer application, and attaching media on failures -->
+        <listener class-name="com.enterprise.listeners.TestListener"/>
+        <listener class-name="com.enterprise.listeners.AnnotationTransformer"/>
+    </listeners>
+
+    <!-- UI Automation Tests -->
+    <test name="UI Tests">
+        <parameter name="browser" value="chrome"/>
+        <packages>
+            <package name="com.enterprise.tests.ui"/>
+        </packages>
+    </test>
+
+    <!-- API Automation Tests -->
+    <test name="API Tests">
+        <packages>
+            <package name="com.enterprise.tests.api"/>
+        </packages>
+    </test>
+
+    <!-- Database Validation Tests -->
+    <test name="Database Tests">
+        <packages>
+            <package name="com.enterprise.tests.db"/>
+        </packages>
+    </test>
+
+    <!-- E2E Integration Tests -->
+    <test name="E2E Integration Tests">
+        <packages>
+            <package name="com.enterprise.tests.integration"/>
+        </packages>
+    </test>
+
+</suite>

@@ -5,6 +5,9 @@ import com.enterprise.database.DatabaseManager;
 import com.enterprise.tests.BaseTest;
 import com.enterprise.utilities.PdfUtil;
 import com.microsoft.playwright.Download;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
@@ -13,9 +16,16 @@ import io.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
@@ -27,13 +37,61 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class E2eCustomerWorkflowTest extends BaseTest {
 
     private static final Logger log = LogManager.getLogger(E2eCustomerWorkflowTest.class);
+    private HttpServer server;
+    private static final int PORT = 8081;
+
+    @BeforeClass
+    public void startLocalServer() throws IOException {
+        log.info("Starting lightweight HTTP server on port {} to serve local mock portal.", PORT);
+        server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        server.createContext("/", new HttpHandler() {
+            @Override
+            public void handle(HttpExchange exchange) throws IOException {
+                String path = exchange.getRequestURI().getPath();
+                Path filePath = Paths.get("src/test/resources/data", path);
+                
+                if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
+                    byte[] bytes = Files.readAllBytes(filePath);
+                    
+                    // Set Content-Type based on extension
+                    if (path.endsWith(".pdf")) {
+                        exchange.getResponseHeaders().set("Content-Type", "application/pdf");
+                    } else if (path.endsWith(".html")) {
+                        exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+                    }
+                    
+                    exchange.sendResponseHeaders(200, bytes.length);
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(bytes);
+                    }
+                } else {
+                    String msg = "404 Not Found";
+                    exchange.sendResponseHeaders(404, msg.length());
+                    try (OutputStream os = exchange.getResponseBody()) {
+                        os.write(msg.getBytes());
+                    }
+                }
+            }
+        });
+        server.setExecutor(null);
+        server.start();
+        log.info("HTTP Server successfully started.");
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void stopLocalServer() {
+        if (server != null) {
+            log.info("Stopping lightweight HTTP server.");
+            server.stop(0);
+            log.info("HTTP Server stopped.");
+        }
+    }
 
     @Test(description = "Execute full E2E customer lifecycle test")
     @Severity(SeverityLevel.BLOCKER)
     @Description("Performs login, creates a customer in UI, triggers API sync, validates DB insertion, downloads a customer report, validates the PDF text, and logs out.")
     public void testE2eCustomerLifecycle() {
         // Paths for Mock Portal and PDF Report
-        String mockPortalPath = new File("src/test/resources/data/mock_portal.html").getAbsolutePath();
         String samplePdfPath = new File("src/test/resources/data/sample_report.pdf").getAbsolutePath();
         String downloadOutputPath = new File("target/downloaded_report.pdf").getAbsolutePath();
 
@@ -44,9 +102,10 @@ public class E2eCustomerWorkflowTest extends BaseTest {
         // Step 1: Pre-generate the report PDF using PDFBox
         PdfUtil.createSamplePdf(samplePdfPath, fullName);
 
-        // Step 2: Open Browser and Navigate to Mock UI
-        log.info("Navigating to mock portal: {}", mockPortalPath);
-        page.navigate("file:///" + mockPortalPath.replace("\\", "/"));
+        // Step 2: Open Browser and Navigate to Mock UI via HTTP URL
+        String url = "http://localhost:" + PORT + "/mock_portal.html";
+        log.info("Navigating to mock portal URL: {}", url);
+        page.navigate(url);
 
         // Step 3: Login to UI
         log.info("Logging in to mock portal.");
@@ -66,7 +125,7 @@ public class E2eCustomerWorkflowTest extends BaseTest {
         log.info("Calling Customer API for registration sync.");
         Map<String, String> apiBody = new HashMap<>();
         apiBody.put("name", fullName);
-        apiBody.put("job", "Premium Customer");
+        apiBody.put("username", "Premium Customer");
         Response apiResponse = ApiClient.post("/users", apiBody);
         assertThat(apiResponse.getStatusCode()).isEqualTo(201);
 
